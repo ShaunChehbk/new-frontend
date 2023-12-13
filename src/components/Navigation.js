@@ -10,6 +10,9 @@ const Navigation = () => {
         <>
         <h1>Home</h1>
         <RefreshToken />
+        <Outlet />
         </>
     )
 }
+
+export default Navigation;
