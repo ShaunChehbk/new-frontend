@@ -26,6 +26,10 @@ const BookmarkList = () => {
         }
     }, [auth]);
 
+    useEffect(() => {
+        console.log(bookmarks);
+    }, [bookmarks]);
+
     return (
         <div>
             BookmarkList
