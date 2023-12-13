@@ -3,7 +3,7 @@
  */
 class Endpoint {
     static base_url = "http://114.132.88.206:8000/"
-    static login = this.base_url + "api/token/"
+    static login = "api/token/"
 }
 
 export default Endpoint;
