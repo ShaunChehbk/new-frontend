@@ -22,18 +22,29 @@ const BookmarkList = () => {
         }
         if (auth?.accessToken) {
             getBookmarks();
-            console.log(bookmarks);
         }
     }, [auth]);
-
+    
     useEffect(() => {
         console.log(bookmarks);
     }, [bookmarks]);
 
     return (
+        <>
         <div>
             BookmarkList
         </div>
+        <div>
+            {bookmarks.map((bookmark, pos) => {
+                // 在{}记得return 
+                return (
+                    <div key={pos}>
+                        {bookmark.title}
+                    </div>
+                )
+            })}
+        </div>
+        </>
     )
 };
 
