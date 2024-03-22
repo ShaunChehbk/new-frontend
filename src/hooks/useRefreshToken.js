@@ -6,22 +6,28 @@ const useRefreshToken = () => {
     const { auth, setAuth } = useAuth();
 
     const refresh = async () => {
-        const refreshToken = JSON.parse(
+        const refresh = JSON.parse(
             localStorage.getItem("refreshToken")
         );
-        console.log("refreshToken", refreshToken);
+        const body = JSON.stringify({ refresh });
         const response = await axios.post(
             Endpoint.refresh_token,
-            { refresh: refreshToken }
+            body,
+            {
+                headers: { 'Content-Type': 'application/json' },
+            }
         );
+        /*
         localStorage.setItem(
             "refreshToken", 
             JSON.stringify(response.data.refresh)
         );
+        */
+        console.log("refresh token response", response.data);
         const accessToken = response.data.access;
         setAuth(prev => ({...prev, accessToken}));
     }
-    
+
     return refresh;
 }
 
