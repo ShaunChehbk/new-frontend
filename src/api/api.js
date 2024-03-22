@@ -4,7 +4,11 @@
 class Endpoint {
     static base_url = "http://114.132.88.206:8000/";
     static login = "api/token/";
-    static refresh_token = "api/token/refresh";
+    static refresh_token = "api/token/refresh/";
+    static get_bookmarks = "AppBookmark/getBookmarks";
+    static get_checkins = "AppProjectMgr/getCheckins";
+    static add_checkin = "AppProjectMgr/addCheckin";
+    static add_task = "/AppProjectMgr/addTask";
 }
 
 export default Endpoint;
