@@ -8,8 +8,16 @@ const Navigation = () => {
 
     return (
         <>
-        <h1>Home</h1>
         <RefreshToken />
+        <div
+        style={{height:"70px", overflowX: "scroll"}}
+        >
+            <br />
+            <Link to="/Bookmark" className="home-navigation">Bookmark</Link>
+            <Link to="/ProjectMgr" className="home-navigation">ProjectMgr</Link>
+            <Link to="/Playground" className="home-navigation">Playground</Link>
+            <Link to="/Playground2" className="home-navigation">PlayGround2</Link>
+        </div>
         <Outlet />
         </>
     )
