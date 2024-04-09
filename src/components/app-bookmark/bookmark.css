@@ -3,3 +3,73 @@
     border: 1px solid;
     padding: 10px;
 }
+
+.bookmark-title-visited {
+    margin: 10px;
+    border: 1px solid;
+    padding: 10px;
+    background-color: gray;
+}
+
+.selected-tag {
+
+}
+
+.unselected-tag {
+
+}
+
+.tag {
+    display: inline-block;
+    margin: 10px;
+    border: 1px solid;
+    padding: 10px;
+}
+
+.tag-group {
+    height: 300px;
+    border: 1px solid;
+    overflow-y: scroll;
+
+}
+
+.button-block {
+    position: fixed;
+    bottom: 10%;
+    width: 100%;
+    display: block;
+}
+.left-btn { 
+    margin: 10px;
+    border: 1px solid;
+    padding: 10px;
+    float: left; 
+}
+.right-btn { 
+    margin: 10px;
+    border: 1px solid;
+    padding: 10px;
+    float: right; 
+}
+
+.edit-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-bookmark-form {
+    height: 90%;
+    width: 90%;
+    background-color: white;
+    border: 1px solid black;
+    margin: 10px;
+    padding: 10px;
+}

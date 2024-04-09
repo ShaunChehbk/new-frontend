@@ -15,6 +15,9 @@ const Navigation = () => {
             <br />
             <Link to="/Bookmark" className="home-navigation">Bookmark</Link>
             <Link to="/ProjectMgr" className="home-navigation">ProjectMgr</Link>
+            <Link to="/GameCfg" className="home-navigation">GameCfg</Link>
+            <Link to="/Review" className="home-navigation">Review</Link>
+            <Link to="/Dictionary" className="home-navigation">Dictionary</Link>
             <Link to="/Playground" className="home-navigation">Playground</Link>
             <Link to="/Playground2" className="home-navigation">PlayGround2</Link>
         </div>

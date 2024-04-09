@@ -7,6 +7,10 @@ import ProjectMgr from "./components/app-projectmgr/projectmgr";
 import PlayGround from "./components/playground/draw-box";
 import "./Home.css"
 import PlayGround2 from "./components/playground/2";
+import EditBookmark from "./components/app-bookmark/editbookmark";
+import CfgMgr from "./components/app-gamecfg/GameCfg";
+import SentencePanel from "./components/app-dictionary/SentencePanel";
+import WordPanel from "./components/app-dictionary/WordPanel";
 
 const Home = () => {
     return (
@@ -15,9 +19,13 @@ const Home = () => {
             <Route element={<RequireAuth />}>
                 <Route path="/" element={<Navigation />} >
                     <Route path="Bookmark" element={<BookmarkList />} />
+                    <Route path="EditBookmark/:id" element={<EditBookmark />} />
                     <Route path="ProjectMgr" element={<ProjectMgr />} />
                     <Route path="Playground" element={<PlayGround />} />
                     <Route path="Playground2" element={<PlayGround2 />} />
+                    <Route path="Dictionary" element={<SentencePanel />} />
+                    <Route path="Review" element={<WordPanel />} />
+                    <Route path="GameCfg" element={<CfgMgr />} />
                 </Route>
             </Route>
             </Route>
