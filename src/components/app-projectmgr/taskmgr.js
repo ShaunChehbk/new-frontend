@@ -5,8 +5,9 @@ const TaskMgr = (props) => {
     useEffect(() => {
         setTasks(props.tasks)
     }, [props])
+    console.log(props.height)
     return (
-        <div className="taskmgr-container">
+        <div className="taskmgr-container" style={{height: props.height}}>
             <div className="banner">
                 <div className="banner-right">
                     <b>Tasks</b>
@@ -17,6 +18,7 @@ const TaskMgr = (props) => {
                     >Add</button>
                 </div>
             </div>
+            <div className="tasks-container">
             {tasks.map((task, pos) => {
                 return (
                 <TaskPanel 
@@ -25,6 +27,7 @@ const TaskMgr = (props) => {
                 />
                 )
             })}
+            </div>
         </div>
     )
 }

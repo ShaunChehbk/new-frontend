@@ -9,7 +9,8 @@ export const CreateTag = ({afterCreate}) => {
     const handleSubmit = async (e) => {
         try {
             if (title) {
-                const response = await axiosPrivate.post(Endpoint.createTag(title), {});
+                const data = { title: title }
+                const response = await axiosPrivate.post(Endpoint.createTag(''), data);
                 console.log(response)
                 setTitle("")
             }

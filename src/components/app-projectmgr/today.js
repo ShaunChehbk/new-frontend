@@ -5,7 +5,7 @@ const Today = (props) => {
         setCheckins(props.checkins)
     }, [props])
     return (
-        <div className="today-container">
+        <div className="today-container" style={{height: props.height}}>
             <div className="banner">
                 <div className="banner-right">
                     <b>
@@ -19,7 +19,7 @@ const Today = (props) => {
             <div className="today-checkin-container">
                 {checkins.map((checkin, pos) => {
                     return (
-                        <div id={checkin.id}>{checkin.title}</div>
+                        <div id={checkin.id}>{" • " + checkin.title}</div>
                     )
                 })}
             </div>

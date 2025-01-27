@@ -1,6 +1,6 @@
 import { WorkList } from "./data-structure"
 import Endpoint from "../../api/api"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import useAuth from "../../hooks/useAuth"
 import useAxiosPrivate from "../../hooks/useAxiosPrivate"
 import WorkMgr from "./workmgr"
@@ -47,10 +47,14 @@ const ProjectMgr = () => {
     const [checkins, setCheckins] = useState();
     const { auth } = useAuth();
     const axiosPrivate = useAxiosPrivate();
+    const [height, setHeight] = useState();
+    const [width, setWidth] = useState();
 
     const [newCheckin, setNewCheckin] = useState({});
     const [isAdding, setIsAdding] = useState(false);
     const [formType, setFormType] = useState("");
+
+    const rect = useRef(null)
 
     const addCheckin = (target = {}) => {
         setFormType("checkin")
@@ -106,12 +110,17 @@ const ProjectMgr = () => {
         }
     }
 
+    const updateSize = () => {
+        setHeight(0.8 * window.innerHeight);
+        setWidth(window.innerWidth);
+        console.log("update size")
+    }
+
     useEffect(() => {
         const getCheckins = async () => {
             try {
                 const response = await axiosPrivate.get(Endpoint.get_checkins);
                 setCheckins(response.data);
-                console.log(response.data)
             } catch (err) {
                 console.log(err);
             }
@@ -119,39 +128,50 @@ const ProjectMgr = () => {
         if (auth?.accessToken) {
             getCheckins();
         }
+        updateSize();
+        window.addEventListener('resize', updateSize);
+        return () => window.removeEventListener('resize', updateSize);
     }, [])
 
     return (
-        <div>
-            {
-                checkins
-                    ? (
-                        <>
-                            <WorkMgr
-                                works={checkins.works}
-                                addCheckin={addCheckin}
-                            />
-                            <TaskMgr
-                                tasks={checkins.tasks}
-                                addCheckin={addCheckin}
-                                addTask={addTask}
-                            />
-                            <Today
-                                addCheckin={addCheckin}
-                                checkins={checkins.independent}
-                            />
-                        </>
-                    ) : <div>"fetching"</div>
-            }
-            {
-                isAdding
-                    ? (
-                            // <CheckinForm setIsAdding={setIsAdding} newCheckin={newCheckin} submitCheckin={submitCheckin} />
-                            <Form type={formType} setIsAdding={setIsAdding} newCheckin={newCheckin} submitCheckin={submitCheckin} submitTask={submitTask}/>
-                    ) : <></>
-            }
+        <>
+        {
+        checkins
+        ? (<>
+            <WorkMgr
+                height={height * 0.4}
+                works={checkins.works}
+                addCheckin={addCheckin}
+            />
+            <div >
+                <div className="mgr-left">
+                    <TaskMgr
+                        height={height * 0.4}
+                        tasks={checkins.tasks}
+                        addCheckin={addCheckin}
+                        addTask={addTask}
+                    />
+                </div>
+                <div className="mgr-right">
+                    <Today
+                        height={height * 0.4}
+                        addCheckin={addCheckin}
+                        checkins={checkins.independent}
+                    />
+                </div>
+            </div>
+            </>) 
+        : <div>"fetching"</div>
+        }
+        {
+            isAdding
+                ? (
+                        // <CheckinForm setIsAdding={setIsAdding} newCheckin={newCheckin} submitCheckin={submitCheckin} />
+                        <Form type={formType} setIsAdding={setIsAdding} newCheckin={newCheckin} submitCheckin={submitCheckin} submitTask={submitTask}/>
+                ) : <></>
+        }
 
-        </div>
+        </>
     )
 }
 export default ProjectMgr

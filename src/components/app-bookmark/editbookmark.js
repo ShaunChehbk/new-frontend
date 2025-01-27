@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import Endpoint from "../../api/api";
 import { axiosPrivate } from "../../api/axios";
 import { CreateTag } from "./tagmgr";
+import { publish } from "../../events/eventTools";
 
 const EditBookmark = () => {
     const navigate = useNavigate();
@@ -159,10 +160,19 @@ export const EditOverlay = ({ bookmarkId, closeEdit }) => {
     const [tags, setTags] = useState([]);
     const [creatingTag, setCreatingTag] = useState(false)
 
+    const updateTags = (tags) => {
+        const sortedTags = tags.sort((tag1, tag2) => {
+            const dis1 = tag1.title.charCodeAt() - '0'.charCodeAt()
+            const dis2 = tag2.title.charCodeAt() - '0'.charCodeAt()
+            return dis1 - dis2
+        })
+        setTags(sortedTags)
+    }
+
     const getTags = async () => {
         try {
             const response = await axiosPrivate.get(Endpoint.getTags());
-            setTags(response.data)
+            updateTags(response.data)
         } catch (err) {
             console.log(err);
         }
@@ -202,6 +212,25 @@ export const EditOverlay = ({ bookmarkId, closeEdit }) => {
         getDetail();
     }
 
+    const onTitleChange = (e) => {
+        setBookmark((prev) => ({...prev, title: e.target.value}))
+    }
+
+    const commit = async () => {
+        const data = {title: bookmark.title, url: bookmark.url}
+        try {
+            const response = await axiosPrivate.post(Endpoint.update(bookmarkId), data)
+        } catch (err) {
+            console.log(err)
+        }
+        publish("onBookmarkTitleChanged", { id: bookmarkId, title: bookmark.title })
+    }
+
+    const deleteClick = (idx) => {
+        console.log(idx)
+        publish("onBookmarkDeleted", { id: idx })
+    }
+
     useEffect(() => {
         if (auth?.accessToken) {
             getDetail();
@@ -209,15 +238,31 @@ export const EditOverlay = ({ bookmarkId, closeEdit }) => {
         }
     }, [auth, bookmarkId])
 
+    const handleEscapeKey = (e) => {
+        console.log(e)
+        if (e.code === 'Escape') { closeEdit() }
+    }
+
+    useEffect(() => {
+        document.addEventListener("keydown", handleEscapeKey)
+
+        // return document.removeEventListener("keydown", handleEscapeKey)
+        return () => document.removeEventListener("keydown", handleEscapeKey)
+    }, [])
+
     return (
         <div className="edit-overlay">
             <div className="edit-bookmark-form">
-                <button onClick={closeEdit}>close</button>
+                {/* <button onClick={closeEdit}>close</button> */}
                 {
                 bookmark
                 ? <div>
                     <a href={bookmark.url} target="_blank">{bookmark.title}</a>
                     <br/>
+                    <input value={bookmark.title} onChange={onTitleChange} />
+                    <button onClick={commit}>
+                        commit
+                    </button>
                     {
                     bookmark.tags.map((tag, idx) => {
                         return <a className="tag" key={idx} onClick={e => removeSelectedTag(idx)}>{tag.title}</a>
@@ -243,6 +288,14 @@ export const EditOverlay = ({ bookmarkId, closeEdit }) => {
                 ? <CreateTag afterCreate={getTags} />
                 : <></>
                 }        
+                <br/>
+                <div style={{border: "1px solid", height: "150px"}} onClick={closeEdit}></div>
+                <br/>
+                <button
+                    onClick={ (e) => deleteClick(bookmark.id)}
+                >
+                    delete
+                </button>
             </div>
         </div>
     )

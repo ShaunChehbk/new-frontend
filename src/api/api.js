@@ -60,6 +60,72 @@ class Endpoint {
     static addWord() {
         return this.base_url + this.AppDictionary + "addExample"
     }
+
+    static getILETSRates() {
+        return `${this.base_url}/ilets/getAllRate`
+    }
+
+    static update(idx) {
+        return `${this.base_url}/AppBookmark/update/${idx}`
+    }
+
+    static delete(idx) {
+        return `${this.base_url}/AppBookmark/delete/${idx}`
+    }
+
+    static getAllTags() {
+        return `${this.base_url}/AppBookmark/getAllTags`
+    }
+
+    static getBookmarksWithTags() {
+        return `${this.base_url}/AppBookmark/getBookmarksWithTags`
+    }
+
+    static getNoteListOf(bookmarkId) {
+        return `${this.base_url}/AppBookmark/getNoteListOf/${bookmarkId}`
+    }
+
+    static Bookmark = class {
+        static namespace = "AppBookmark/"
+        static getOrCreate() {
+            return Endpoint.base_url + this.namespace + "getOrCreate"
+        }
+    }
+
+    static Record = class {
+        static namespace = `${Endpoint.base_url}AppRecord/`
+        static getRequirements() {
+            return this.namespace + "getRequirements"
+        }
+        static getTimeline() {
+            return this.namespace + "timeline"
+        }
+        static getReqiurementDetail(id) {
+            return this.namespace + `getDetailOfRequirement/${id}`;
+        }
+        static createRequirement() {
+            return this.namespace + "createRequirement"
+        }
+        static createKnowledge() {
+            return this.namespace + "createKnowledge"
+        }
+        static createNote() {
+            return this.namespace + "createNote"
+        }
+        static setTextOfKnowledge(id) {
+            return this.namespace + `setTextOfKnowledge/${id}`
+        }
+        static createSolution() {
+            return this.namespace + 'createSolution'
+        }
+        static setRequirementForSolution(solution_id, requirement_id) {
+            return this.namespace + `solution/${solution_id}/setRequirement/${requirement_id}`
+        }
+
+        static addBookmarkForKnowledge(knowledge_id, bookmark_id) {
+            return this.namespace + `knowledge/${knowledge_id}/addBookmark/${bookmark_id}`
+        }
+    }
 }
 
 export default Endpoint;

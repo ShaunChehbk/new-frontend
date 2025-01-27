@@ -1,0 +1,96 @@
+div.knowledge-abstract {
+    background-color: darkkhaki;
+    border: 1px solid black;
+    margin: 10px;
+    padding: 10px;
+}
+
+div.requirement-abstract {
+    /* background-color: dimgrey; */
+    border: 1px solid black;
+    margin: 10px;
+    padding: 10px;
+}
+
+div.note-abstract {
+    background-color: orange;
+    border: 1px solid black;
+    margin: 10px;
+    padding: 10px;
+}
+
+div.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+div.detail {
+    height: 90%;
+    width: 90%;
+    background-color: white;
+    border: 1px solid black;
+    margin: 10px;
+    padding: 10px;
+}
+
+div.click-to-close {
+    height: 50px;
+    border: 1px solid black;
+}
+
+div.markdown-container {
+    overflow: scroll;
+}
+
+div.solution {
+    background-color: darkkhaki;
+    border: 1px solid black;
+    margin: 10px;
+    padding: 10px;
+}
+
+div.horizontal-scroller {
+    overflow-y: scroll;
+    /* height: 600px; */
+}
+
+div.workmgr-container {
+    overflow-y: scroll;
+}
+
+.timeline-board {
+    height: 70vh;
+}
+
+.timeline-board:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.timeline-left {
+    border: 1px solid black;
+    float: left;
+    width: 48%;
+    overflow-y: scroll;
+    height: 80vh;
+
+}
+
+.timeline-right {
+    border: 1px solid black;
+    float: right;
+    width: 48%;
+    overflow-y: scroll;
+    height: 90vh;
+
+}

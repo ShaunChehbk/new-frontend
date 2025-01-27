@@ -38,13 +38,15 @@ const AddWord = () => {
     const submitNewWord = async (e) => {
         e.preventDefault()
         const data = {type: type, word: newWord, sentence: newSentence}
-        try {
-            console.log(data)
-            const response = await axiosPrivate.post(Endpoint.addWord(), data);
-            setNewSentence("");
-            setNewWord("");
-        } catch (err) {
-            setNewWord(err.response.data);
+        if (newSentence != "" & newWord != "") {
+            try {
+                console.log(data)
+                const response = await axiosPrivate.post(Endpoint.addWord(), data);
+                setNewSentence("");
+                setNewWord("");
+            } catch (err) {
+                setNewWord(err.response.data);
+            }
         }
     }
 

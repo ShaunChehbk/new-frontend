@@ -26,8 +26,16 @@
     padding: 10px;
 }
 
+.selected-tag {
+    display: inline-block;
+    margin: 10px;
+    border: 1px solid;
+    padding: 10px;
+    background-color: grey;
+}
+
 .tag-group {
-    height: 300px;
+    height: 450px;
     border: 1px solid;
     overflow-y: scroll;
 
@@ -72,4 +80,9 @@
     border: 1px solid black;
     margin: 10px;
     padding: 10px;
+}
+
+.remove-scrolling {
+    height: 100%;
+    overflow: hidden;
 }

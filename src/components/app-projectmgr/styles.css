@@ -48,12 +48,17 @@
     background-color: bisque;
 }
 
+.tasks-container {
+    height: 85%;
+    overflow-x: scroll;
+    overflow-y: scroll;
+}
+
 .task-panel {
 }
 
 .task-detail {
     white-space: nowrap;
-    overflow-x: scroll;
     display: inline-block;
     width: 80%;
 }
@@ -62,7 +67,6 @@
     border: 1px solid black;
     margin: 10px;
     padding: 10px;
-    height: 300px;
 }
 
 .today-checkin-container {
@@ -97,4 +101,19 @@ textarea {
     width: 100%;
     height: 50%;
     box-sizing: border-box;
+}
+
+.mgr-container {
+
+}
+
+.mgr-left {
+    float: left;
+    width: 50%;
+}
+
+.mgr-right {
+    float: right;
+    width: 50%;
+
 }

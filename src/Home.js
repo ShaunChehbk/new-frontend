@@ -11,6 +11,9 @@ import EditBookmark from "./components/app-bookmark/editbookmark";
 import CfgMgr from "./components/app-gamecfg/GameCfg";
 import SentencePanel from "./components/app-dictionary/SentencePanel";
 import WordPanel from "./components/app-dictionary/WordPanel";
+import RecordMgr from "./components/app-record/RecordMgr";
+import RatePanel from "./components/app-ilets/RateList";
+import TagList from "./components/app-tags/taglist";
 
 const Home = () => {
     return (
@@ -18,7 +21,9 @@ const Home = () => {
             <Route element={<PersistLogin />}>
             <Route element={<RequireAuth />}>
                 <Route path="/" element={<Navigation />} >
+                    <Route path="ilets" element={<RatePanel />} />
                     <Route path="Bookmark" element={<BookmarkList />} />
+                    <Route path="TagList" element={<TagList />} />
                     <Route path="EditBookmark/:id" element={<EditBookmark />} />
                     <Route path="ProjectMgr" element={<ProjectMgr />} />
                     <Route path="Playground" element={<PlayGround />} />
@@ -26,6 +31,7 @@ const Home = () => {
                     <Route path="Dictionary" element={<SentencePanel />} />
                     <Route path="Review" element={<WordPanel />} />
                     <Route path="GameCfg" element={<CfgMgr />} />
+                    <Route path="Record" element={<RecordMgr />} />
                 </Route>
             </Route>
             </Route>
