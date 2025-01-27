@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Endpoint from "../../api/api";
 import { subscribe } from "../../events/eventTools";
 import '../app-bookmark/bookmark.css'
+import { BookmarkList } from "../app-bookmark/bookmarklist";
 
 const TagList = () => {
     const [selectedTags, setSelectedTags] = useState([])
@@ -47,6 +48,8 @@ const TagList = () => {
         getBookmarksWithTags()
     }, [selectedTags])
 
+    console.log(bookmarks)
+
     return (
         <div>
             <div className="tag-group">
@@ -57,11 +60,19 @@ const TagList = () => {
             }
             </div>
             <div>
-                {bookmarks.map((bookmark) => {
+                {/* {bookmarks.map((bookmark) => {
                     return <Bookmark
                         bookmark={bookmark}
                     />
-                })}
+                })} */}
+                {/* 只像下面这样写，会出现：
+                    Taglist中的bookmarks更新了，BookmarkList也重新渲染了，但BookmarkList中的bookmarks始终为[]
+                 */}
+                <BookmarkList list={bookmarks}/>
+
+                {/* bookmarks.length === 0
+                ? 'empty'
+                : <BookmarkList list={bookmarks}/> */}
             </div>
         </div>
     )

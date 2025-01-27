@@ -8,13 +8,47 @@ import "./bookmark.css"
 import { subscribe } from "../../events/eventTools";
 import NoteManager from "./note-manager";
 
-const BookmarkList = () => {
+const UntaggedBookmarkList = () => {
+    const axiosPrivate = useAxiosPrivate()
     const { auth } = useAuth();
-    const [success, setSuccess] = useState(false);
     const [bookmarks, setBookmarks] = useState([]);
+
+
+    const getBookmarks = async () => {
+        try {
+            const response = await axiosPrivate.get(Endpoint.get_bookmarks);
+            setBookmarks(response.data);
+            console.log('getbookmarks success')
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        if (auth?.accessToken) {
+            getBookmarks();
+        }
+    }, [])
+
+    console.log(bookmarks.length)
+
+    return (
+        <>
+        {bookmarks.length === 0 
+        ? <div>getting</div>
+        : <BookmarkList list={bookmarks}/>
+        }
+        </>
+    )
+
+}
+
+const BookmarkList = ({ list }) => {
+    const [renderCount, setRenderCount] = useState(0)
+    const [success, setSuccess] = useState(false);
     const axiosPrivate = useAxiosPrivate();
+    const [bookmarks, setBookmarks] = useState()
     const navigate = useNavigate();
-    const [response, setResponse] = useState("")
     const [editing, setEditing] = useState(false);
     const [currentBookmark, setCurrentBookmark] = useState();
     const [shouldShowNoteList, setShouldShowNoteList] = useState(false);
@@ -59,21 +93,7 @@ const BookmarkList = () => {
             updateBookmarkTitle(e.detail.id, e.detail.title)
         })
 
-        const getBookmarks = async () => {
-            try {
-                const response = await axiosPrivate.get(Endpoint.get_bookmarks);
-                setBookmarks(response.data);
-                setSuccess(true);
-                setResponse("Success");
-            } catch (err) {
-                console.log(err);
-                setResponse("Fail")
-            }
-        }
-        if (auth?.accessToken) {
-            getBookmarks();
-        }
-    }, [auth]);
+    }, []);
 
     const updateBookmarkTitle = (id, title) => {
         // console.log(id, title)
@@ -106,18 +126,23 @@ const BookmarkList = () => {
         }
 
     }
+    // 如果不这样写的话，就会导致list更新了，但bookmarks没有更新
+    useEffect(() => {
+        setBookmarks(list)
+        setRenderCount(renderCount+1)
+        console.log(renderCount)
+    }, [list])
 
     return (
         <>
             <div>
-                BookmarkList
+                Comp BookmarkList
             </div>
             <div>
-                {response}
-                {bookmarks.length}
+                {bookmarks ? bookmarks.length : 'null'}
             </div>
             <div>
-                {bookmarks.map((bookmark, idx) => {
+                {bookmarks ? bookmarks.map((bookmark, idx) => {
                     // 在{}记得return 
                     return <Bookmark
                         bookmark={bookmark}
@@ -126,7 +151,7 @@ const BookmarkList = () => {
                         clickDelete={deleteById}
                         onShowButtonClicked={showNoteList}
                     />
-                })}
+                }): 'null'}
             </div>
             {
             editing
@@ -206,5 +231,5 @@ const TagPanel = ({ tags }) => {
     )
 }
 
-export default BookmarkList;
-export { Bookmark }
+export default UntaggedBookmarkList;
+export { Bookmark, BookmarkList }
