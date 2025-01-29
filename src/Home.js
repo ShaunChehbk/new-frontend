@@ -14,6 +14,7 @@ import WordPanel from "./components/app-dictionary/WordPanel";
 import RecordMgr from "./components/app-record/RecordMgr";
 import RatePanel from "./components/app-ilets/RateList";
 import TagList from "./components/app-tags/taglist";
+import NoteManager from "./components/app-note/note-manager";
 
 const Home = () => {
     return (
@@ -24,6 +25,7 @@ const Home = () => {
                     <Route path="ilets" element={<RatePanel />} />
                     <Route path="Bookmark" element={<BookmarkList />} />
                     <Route path="TagList" element={<TagList />} />
+                    <Route path="NoteList" element={<NoteManager/>} />
                     <Route path="EditBookmark/:id" element={<EditBookmark />} />
                     <Route path="ProjectMgr" element={<ProjectMgr />} />
                     <Route path="Playground" element={<PlayGround />} />

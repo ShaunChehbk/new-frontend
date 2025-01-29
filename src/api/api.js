@@ -85,6 +85,10 @@ class Endpoint {
         return `${this.base_url}/AppBookmark/getNoteListOf/${bookmarkId}`
     }
 
+    static getAllNotes() {
+        return `${this.base_url}/AppRecord/getNotes`
+    }
+
     static Bookmark = class {
         static namespace = "AppBookmark/"
         static getOrCreate() {
