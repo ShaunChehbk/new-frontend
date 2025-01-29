@@ -146,7 +146,7 @@ const BookmarkList = ({ list }) => {
                     // 在{}记得return 
                     return <Bookmark
                         bookmark={bookmark}
-                        idx={idx}
+                        key={idx}
                         clickEdit={openEdit}
                         clickDelete={deleteById}
                         onShowButtonClicked={showNoteList}

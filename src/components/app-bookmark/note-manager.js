@@ -49,7 +49,7 @@ const ListView = ({ bookmarkId }) => {
         <div>
             {noteList.map((note, idx) => {
                 return (
-                    <div>
+                    <div key={idx} id={note.id}>
                         {note.text}
                     </div>
                 )
