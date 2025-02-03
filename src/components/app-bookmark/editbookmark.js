@@ -260,6 +260,7 @@ export const EditOverlay = ({ bookmarkId, closeEdit }) => {
                     <a href={bookmark.url} target="_blank">{bookmark.title}</a>
                     <br/>
                     <input value={bookmark.title} onChange={onTitleChange} />
+                    <div>{bookmark.url}</div>
                     <button onClick={commit}>
                         commit
                     </button>
