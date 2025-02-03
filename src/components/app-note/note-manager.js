@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import Endpoint from "../../api/api";
 import "./styleOfAppNote.css"
 import ReactMarkdown from "react-markdown";
+import NoteOverlayManager from "./note-overlay";
+import { subscribe, unsubscribe, publish } from "../../events/eventTools";
 
 const classify = (text) => {
     // 找到所有```的位置
@@ -57,6 +59,7 @@ const NoteManager = () => {
             <NoteList
                 list={noteList}
             />
+            <NoteOverlayManager />
         </div>
     )
 }
@@ -70,22 +73,56 @@ const NoteList = ({ list }) => {
     return (
         <>
         {noteList.map((note, idx) => {
-            return <Note key={idx} p_note={note} />
+            return (
+                <div>
+                    <button style={{float: "right", marginRight: "12px", marginTop:"2px"}} onClick={ (e) => publish("openNoteOverlay", {id: note.id}) }>detail</button>
+                    <Note key={idx} pNote={note} />
+                </div>
+            )
         })}
         </>
     )
 }
 
-const Note = ({ p_note }) => {
-    const [note, setNote] = useState(p_note)
+const Note = ({ pNote }) => {
     const [nodes, setNodes] = useState([])
+    const [note, setNote] = useState(pNote)
+    const [isEditing, setIsEditing] = useState(false)
 
     useEffect(() => {
+        // onEditEnd
+        //
+        // subscribe("closeNoteEdit", (e) => { setIsEditing(false) })
+
         setNodes(classify(note.text))
         // setNodes(classify(note.text))
     }, [note])
+    
+    if (note === undefined) { 
+        return 'undefined'
+    }
 
-    console.log(nodes)
+    const handleEdit = () => {
+        // publish("editNote", {id: note.id, text: note.text})
+        setIsEditing(true)
+    }
+
+    
+    const handleEndEdit = (text) => {
+        setIsEditing(false)
+        // setNote(note => {...note, text})
+        setNote(note => { return {...note, text}})
+    }
+
+    const closeEdit = () => {
+        setIsEditing(false)
+    }
+
+    if (isEditing) {
+        return (
+            <EditView pNote={note} update={handleEndEdit} close={closeEdit}/>
+        )
+    }
 
     return (
         // <div className="note" id={note.id} dangerouslySetInnerHTML={{__html: note.text}}>
@@ -95,7 +132,8 @@ const Note = ({ p_note }) => {
                 nodes.map((node, idx) => {
                     if (node.type === "text") {
                         return (
-                            <ReactMarkdown 
+                            <ReactMarkdown
+                                key={idx} 
                                 children={node.text} 
                                 className="reactMarkdown"
                             />
@@ -104,6 +142,7 @@ const Note = ({ p_note }) => {
                     else if (node.type === "code") {
                         return (
                             <ReactMarkdown
+                                key={idx} 
                                 children={`\`\`\`${node.text}\`\`\``}
                                 className="reactMarkdown"
                             />
@@ -111,8 +150,44 @@ const Note = ({ p_note }) => {
                 }
             })
             }
+            <br/>
+            <button onClick={handleEdit}>Edit</button>
+        </div>
+    )
+}
+
+const EditView = ({ pNote, update, close }) => {
+    const textbox = useRef(null)
+    const [text, setText] = useState(pNote.text)
+    const id = pNote.id
+    const axiosPrivate = useAxiosPrivate()
+
+    const handleSubmit = async () => {
+        // publish("closeNoteEdit")
+        // console.log(Endpoint.updateNote(id))
+        console.log(text, id)
+        const data = { text }
+        const response = await axiosPrivate.post(Endpoint.updateNote(id), data)
+        if (response.status === 200) {
+            update(text)
+        }
+    }
+
+    const adjustHeight = () => {
+        textbox.current.style.height = "inherit";
+        textbox.current.style.height = `${textbox.current.scrollHeight}px`;
+    }
+    
+    useLayoutEffect(adjustHeight, [])
+
+    return (
+        <div className="note" id={pNote.id}>
+            <textarea ref={textbox} value={text} onChange={ (e)=>setText(e.target.value) } />
+            <button onClick={handleSubmit}>submit</button>
+            <button onClick={close}>close</button>
         </div>
     )
 }
 
 export default NoteManager
+export { Note }
