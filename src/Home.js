@@ -15,6 +15,8 @@ import RecordMgr from "./components/app-record/RecordMgr";
 import RatePanel from "./components/app-ilets/RateList";
 import TagList from "./components/app-tags/taglist";
 import NoteManager from "./components/app-note/note-manager";
+import ActivityManager from "./components/app-activity/ActivityManager";
+import ThoughtManager from "./components/app-tought/ThoughtManager";
 
 const Home = () => {
     return (
@@ -22,12 +24,14 @@ const Home = () => {
             <Route element={<PersistLogin />}>
             <Route element={<RequireAuth />}>
                 <Route path="/" element={<Navigation />} >
-                    <Route path="ilets" element={<RatePanel />} />
+                    <Route path="Thought" element={<ThoughtManager />} />
                     <Route path="Bookmark" element={<BookmarkList />} />
                     <Route path="TagList" element={<TagList />} />
-                    <Route path="NoteList" element={<NoteManager/>} />
-                    <Route path="EditBookmark/:id" element={<EditBookmark />} />
+                    <Route path="Activity" element={<ActivityManager />} />
                     <Route path="ProjectMgr" element={<ProjectMgr />} />
+                    <Route path="NoteList" element={<NoteManager/>} />
+                    <Route path="ilets" element={<RatePanel />} />
+                    <Route path="EditBookmark/:id" element={<EditBookmark />} />
                     <Route path="Playground" element={<PlayGround />} />
                     <Route path="Playground2" element={<PlayGround2 />} />
                     <Route path="Dictionary" element={<SentencePanel />} />

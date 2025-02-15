@@ -15,6 +15,7 @@ class Endpoint {
     static get_neighbour = "AppBookmark/getNeighbour/"
     static AppGameCfg = "AppGameCfg/"
     static AppDictionary = "AppDictionary/"
+    static TaskManager = "TaskManager/"
 
     static editBookmark(id) {
         return this.base_url + this.edit_bookmark + id;
@@ -95,6 +96,26 @@ class Endpoint {
 
     static updateNote(id) {
         return `${this.base_url}/AppRecord/updateNote/${id}`
+    }
+
+    static addActivityFor(timelineId) {
+        return `${this.base_url}/TaskManager/createActivityForThread/${timelineId}`
+    }
+
+    static getAllActivity() {
+        return `${this.base_url}/TaskManager/getAllActivity`
+    }
+
+    static getAllThought() {
+        return `${this.base_url}/TaskManager/getAllThought/`
+    }
+
+    static createNewThought() {
+        return `${this.base_url}/TaskManager/createThought/`
+    }
+
+    static getAllThread() {
+        return `${this.base_url}/TaskManager/getAllThread/`
     }
 
     static Bookmark = class {

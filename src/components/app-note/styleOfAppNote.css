@@ -9,6 +9,7 @@
     margin: 10px;
     border: 1px solid;
     padding: 10px;
+    overflow-x: scroll;
 }
 
 .reactMarkdown {

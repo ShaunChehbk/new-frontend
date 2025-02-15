@@ -70,6 +70,10 @@ const NoteList = ({ list }) => {
         setNoteList(list)
     }, [list])
 
+    const onlyShowOneNoteOfBookmark = () => {
+        
+    }
+
     return (
         <>
         {noteList.map((note, idx) => {

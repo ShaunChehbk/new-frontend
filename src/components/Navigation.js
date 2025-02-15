@@ -13,12 +13,14 @@ const Navigation = () => {
         style={{height:"70px", overflowX: "scroll"}}
         >
             <br />
-            <Link to="/ilets" className="home-navigation">ILETS</Link>
+            <Link to="/Thought" className="home-navigation">Thought</Link>
             <Link to="/Bookmark" className="home-navigation">Bookmark</Link>
-            <Link to="/TagList" className="home-navigation">TagList</Link>
             <Link to="/NoteList" className="home-navigation">NoteList</Link>
-            <Link to="/ProjectMgr" className="home-navigation">ProjectMgr</Link>
+            <Link to="/Activity" className="home-navigation">Activity</Link>
+            <Link to="/TagList" className="home-navigation">TagList</Link>
             <Link to="/Record" className="home-navigation">Record</Link>
+            <Link to="/ProjectMgr" className="home-navigation">ProjectMgr</Link>
+            <Link to="/ilets" className="home-navigation">ILETS</Link>
             <Link to="/Review" className="home-navigation">Review</Link>
             <Link to="/Dictionary" className="home-navigation">Dictionary</Link>
             <Link to="/GameCfg" className="home-navigation">GameCfg</Link>
