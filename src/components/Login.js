@@ -12,6 +12,8 @@ const Login = () => {
     const [errmsg, setErrmsg] = useState("");
     const [success, setSuccess] = useState(false);
 
+    const refresh = localStorage.getItem("refreshToken")
+
     useEffect(() => {
         setErrmsg("");
     }, [username, password]);
@@ -51,12 +53,14 @@ const Login = () => {
                         <h1>Logged</h1>
                     </section>
                 ) : (
+                    <>
                     <section>
                         <form onSubmit={ loginSubmit }>
                             <label htmlFor="username">Username::</label>
                             <input
                                 type="text"
                                 id="username"
+                                style={{fontSize: "16px"}}
                                 autoComplete="off"
                                 onChange={( e ) => setUsername( e.target.value )}
                                 value={ username }
@@ -67,6 +71,7 @@ const Login = () => {
                             <input
                                 type="password"
                                 id="password"
+                                style={{fontSize: "16px"}}
                                 onChange={( e ) => setPassword( e.target.value )}
                                 value={ password }
                                 required
@@ -75,6 +80,7 @@ const Login = () => {
                             <button>Sign In</button>
                         </form>
                     </section>
+                    </>
                 )
             }
         </>

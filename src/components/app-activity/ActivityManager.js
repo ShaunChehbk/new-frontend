@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import Endpoint from "../../api/api";
 import { publish, unsubscribe, subscribe } from "../../events/eventTools";
+import SelecThread from "./CreateManager";
+import APIContext, { handleError } from "../../context/APIProvider";
 
 // http://114.132.88.206:8000/TaskManager/createActivity/
 
@@ -40,10 +42,44 @@ const ActivityManager = () => {
 
     console.log(activityList)
 
+    // const submitNewActivity = () => {
+    //     return async (endpoint, data) => {
+    //         try {
+    //             const response = await axiosPrivate.post(endpoint, data)
+    //             if (response.status === 201) {
+    //                 const data = response.data
+    //                 publish("newActivityCreated", data)
+    //                 return true
+    //             }
+    
+    //         } catch (err) {
+    //             console.log(err)
+    //             return false
+    //         }
+    //     }
+    // }
+
+
+    const submitNewActivity = async (data) => {
+        try {
+            // 默认添加到 -- No Thead --
+            const response = await axiosPrivate.post(Endpoint.addActivityFor(0), data)
+            if (response.status === 201) {
+                const data = response.data
+                publish("newActivityCreated", data)
+                return true
+            }
+
+        } catch (err) {
+            console.log(err)
+            return false
+        }
+    }
+
     return (
         <>
         <div>
-        <AddNewActivity />
+        <AddNewActivity pSubmit={submitNewActivity}/>
         </div>
         <div>
         {activityList == null
@@ -55,7 +91,71 @@ const ActivityManager = () => {
     )
 }
 
-const AddNewActivity = () => {
+const AddNewActivity = ({ pSubmit }) => {
+    const [newActivityResume, setNewActivityResume] = useState("")
+    const [newActivityDescription, setNewActivityDescription] = useState("")
+    // const [timelineId, setTimelineId] = useState(0)
+    // const axiosPrivate = useAxiosPrivate()
+
+    const handleNewActivityResume = (event) => {
+        event.preventDefault()
+        setNewActivityResume(event.target.value)
+    }
+
+    const handleNewActivityDescription = (event) => {
+        event.preventDefault()
+        setNewActivityDescription(event.target.value)
+    }
+
+    const submitNewActivity = async (event) => {
+        event.preventDefault()
+        const data = {resume: newActivityResume, description: newActivityDescription}
+        const response = await pSubmit(data)
+        if (response === true) {
+            setNewActivityDescription("")
+            setNewActivityResume("")
+        }
+    }
+
+    
+
+    return (
+        <div>
+            {/* <SelecThread pOnSelectThread={setTimelineId}/> */}
+            <textarea 
+                value={newActivityResume}
+                onChange={handleNewActivityResume}
+            />
+            <textarea
+                value={newActivityDescription}
+                onChange={handleNewActivityDescription}
+            />
+            <button onClick={submitNewActivity}>submit</button>
+        </div>
+    )
+}
+
+const ActivityList = ({ pActivityList, pOnEntityClick }) => {
+    const [activityList, setActivityList] = useState(pActivityList)
+
+    useEffect(() => {
+        setActivityList(pActivityList)
+    }, [pActivityList])
+
+    return (
+        <>
+        {activityList.map((activity, idx) => {
+            return (
+                <div key={idx} id={activity.id}>
+                    <a onClick={ e => pOnEntityClick(activity)}>Edit</a> - {convertIdToDate(activity.id)} - {activity.isAction ? <a style={{background: "red"}}>action</a> : ''} - {activity.resume}
+                </div>
+            )
+        })}
+        </>
+    )
+}
+
+const AddNewActivityForThread = ({ pThreadId }) => {
     const [newActivityResume, setNewActivityResume] = useState("")
     const [newActivityDescription, setNewActivityDescription] = useState("")
     const [timelineId, setTimelineId] = useState(0)
@@ -92,7 +192,6 @@ const AddNewActivity = () => {
 
     return (
         <div>
-            <SelectTimeline pOnSelectTimeline={setTimelineId}/>
             <textarea 
                 value={newActivityResume}
                 onChange={handleNewActivityResume}
@@ -106,56 +205,35 @@ const AddNewActivity = () => {
     )
 }
 
-const ActivityList = ({ pActivityList }) => {
-    const [activityList, setActivityList] = useState(pActivityList)
+const SetIsAction = ({ pActivity }) => {
+    const { useRequest } = useContext(APIContext)
+    const [activity, setActivity] = useState(pActivity)
+    const setIsActionOfActivity = useRequest('setIsActionOfActivity')
+
+    console.log(activity)
 
     useEffect(() => {
-        setActivityList(pActivityList)
-    }, [pActivityList])
+        setActivity(pActivity)
+    }, [pActivity])
 
-    return (
-        <>
-        {activityList.map((activity, idx) => {
-            return (
-                <div key={idx}>{convertIdToDate(activity.id)} - {activity.resume}</div>
-            )
-        })}
-        </>
-    )
-}
-
-const SelectTimeline = ({ pOnSelectTimeline }) => {
-    const axiosPrivate = useAxiosPrivate()
-    const [timelineList, setTimelineList] = useState([])
-    // const [timelineId, setTimelineId] = useState(0)
-
-    const getAllTimeline = async () => {
-        try {
-            const response = await axiosPrivate.get(Endpoint.getAllThread())
-            setTimelineList(response.data)
-        } catch (err) {
-            console.log(err)
-        }
+    const handleSuccess = (response) => {
+        setActivity(response.data)
     }
 
-    const handleSelectChange = (event) => {
-        event.preventDefault()
-        console.log(event.target.value)
+    const handleCheckedChange = (e) => {
+        setIsActionOfActivity([activity.id, e.target.checked], {}, handleSuccess, handleError)
     }
 
-    useEffect(() => {
-        getAllTimeline()
-    }, [])
-
+    
     return (
-        <div>
-            <label>Thread:</label>
-            <select name="selectTime" onChange={ e => pOnSelectTimeline(e.target.value) }>
-                <option value={0}>—— No Thread ——</option>
-                {timelineList.map((timeline, idx) => <option value={timeline.id}>{timeline.name}</option>)}
-            </select>
+        <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+            <label>
+                isAction :
+            </label>
+            <input style={{width:"25px", height:"25px"}} type="checkbox" checked={activity.isAction} onChange={handleCheckedChange}/>
         </div>
     )
 }
 
 export default ActivityManager
+export { ActivityList, AddNewActivity, SetIsAction }

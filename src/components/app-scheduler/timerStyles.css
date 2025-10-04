@@ -1,6 +1,11 @@
-.home-navigation {
+.timer {
     display: inline-block;
     border: 1px solid;
     padding: 5px;
     margin: 5px;
+}
+
+.timerManager {
+    white-space: nowrap;
+    overflow-x: scroll;
 }

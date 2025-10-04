@@ -78,7 +78,7 @@ const NoteList = ({ list }) => {
         <>
         {noteList.map((note, idx) => {
             return (
-                <div>
+                <div key={note.id}>
                     <button style={{float: "right", marginRight: "12px", marginTop:"2px"}} onClick={ (e) => publish("openNoteOverlay", {id: note.id}) }>detail</button>
                     <Note key={idx} pNote={note} />
                 </div>
@@ -130,7 +130,7 @@ const Note = ({ pNote }) => {
 
     return (
         // <div className="note" id={note.id} dangerouslySetInnerHTML={{__html: note.text}}>
-        <div className="note" id={note.id}>
+        <div className="note" note-id={note.id} key={note.id}>
             {/* 在<ReactMarkdown/>中，设置overflow-x */}
             {
                 nodes.map((node, idx) => {

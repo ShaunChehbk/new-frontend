@@ -6,7 +6,7 @@ export const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState({});
 
     useEffect(() => {
-        console.log('auth', auth);
+        console.log('AuthProvider auth ', auth);
     }, [auth]);
 
     return (

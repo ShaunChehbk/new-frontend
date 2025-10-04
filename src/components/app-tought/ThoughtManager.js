@@ -88,8 +88,8 @@ const ThoughtList = ({ pThoughtList }) => {
         <>
         {thoughtList.map((thought, idx) => {
             return (
-                <div key={thought.idx}>
-                    {thought.content}
+                <div key={thought.idx} thought-id={thought.id}>
+                    * {thought.content}<br/>
                 </div>
             )
         })}

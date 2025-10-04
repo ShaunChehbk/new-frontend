@@ -17,6 +17,10 @@ class Endpoint {
     static AppDictionary = "AppDictionary/"
     static TaskManager = "TaskManager/"
 
+    static getAllApi() {
+        return this.base_url + 'getAllApi'
+    }
+
     static editBookmark(id) {
         return this.base_url + this.edit_bookmark + id;
     }
@@ -116,6 +120,50 @@ class Endpoint {
 
     static getAllThread() {
         return `${this.base_url}/TaskManager/getAllThread/`
+    }
+
+    static createTask(threadId) {
+        return `${this.base_url}/TaskManager/createTask/${threadId}`
+    }
+
+    static getAllTask() {
+        return `${this.base_url}/TaskManager/getAllTask/`
+    }
+
+    static getAllActivityOfThread(threadId) {
+        return `${this.base_url}/TaskManager/getAllActivityOfThread/${threadId}`
+    }
+
+    static getAllTaskOfThread(threadId) {
+        return `${this.base_url}/TaskManager/getAllTaskOfThread/${threadId}`
+    }
+
+    static updateActivity(activityId) {
+        return `${this.base_url}/TaskManager/updateActivity/${activityId}`
+    }
+
+    static addActivityForTask(taskId) {
+        return `${this.base_url}/TaskManager/addActivityForTask/${taskId}`
+    }
+
+    static addTaskForThread(threadId) {
+        return `${this.base_url}/TaskManager/addTaskForThread/${threadId}`
+    }
+
+    static addThreadFor(threadId="") {
+        return `${this.base_url}/TaskManager/addThreadFor/${threadId}`
+    }
+
+    static getAllEvent() {
+        return `${this.base_url}/TaskManager/getAllEvent/`
+    }
+
+    static addNewDistraction() {
+        return `${this.base_url}/TaskManager/addNewDistraction/`
+    }
+
+    static getAllDistraction() {
+        return `${this.base_url}/TaskManager/getAllDistraction/`
     }
 
     static Bookmark = class {
